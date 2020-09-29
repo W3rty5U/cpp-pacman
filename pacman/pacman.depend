@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1601387855 source:c:\users\filip\documents\github\cpp-pacman\pacman\main.cpp
+	<iostream>
+	<fstream>
+	<sstream>
+
