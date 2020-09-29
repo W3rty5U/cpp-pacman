@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <istream>
 
 using namespace std;
 
@@ -44,7 +44,7 @@ const int MAPA[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY] = {
 int mapa[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY];
 
 void zapisz(char* nazwa_pliku) {
-    fstream plik(nazwa_pliku, ios::out | ios::trunc);
+    ofstream plik(nazwa_pliku);
     if(plik.good()) {
         plik << ROZMIAR_MAPY_X << " " << endl;
         plik << ROZMIAR_MAPY_Y << " " << endl;
@@ -62,10 +62,30 @@ void zapisz(char* nazwa_pliku) {
 }
 
 void wczytaj(char* nazwa_pliku) {
+    string sData, x, y;
+    ifstream plik(nazwa_pliku);
+    plik >> x >> y;
+    for(int i=0; i<stoi(y); i++) {
+        for(int j=0; j<stoi(x); j++) {
+            plik >> sData;
+            mapa[i][j] = stoi(sData);
+        }
+    }
+    plik.close();
+}
 
+void wypisz() {
+    for(int i=0; i<MAX_ROZMIAR_MAPY; i++) {
+        for(int j=0; j<MAX_ROZMIAR_MAPY; j++) {
+            cout << (char)mapa[i][j];
+        }
+        cout << "\n";
+    }
 }
 
 int main() {
     zapisz("mapa.txt");
+    wczytaj("mapa.txt");
+    wypisz();
     return 0;
 }
