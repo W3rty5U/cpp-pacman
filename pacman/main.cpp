@@ -42,7 +42,6 @@ const int MAPA[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY] = {
     {MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR}
 };
 int mapa[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY];
-int buforMapy[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY];
 
 void zapisz(char* nazwa_pliku) {
     ofstream plik(nazwa_pliku);
@@ -72,18 +71,22 @@ void wczytaj(char* nazwa_pliku) {
             mapa[i][j] = stoi(sData);
         }
     }
-    buforMapy = mapa;
     plik.close();
 }
 
-void wypisz(int pozX, pozY) {
+void wypisz(int pozX, int pozY) {
     static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     cout.flush();
     COORD coord = {0, 0};
     SetConsoleCursorPosition(hOut, coord);
     for(int i=0; i<MAX_ROZMIAR_MAPY; i++) {
         for(int j=0; j<MAX_ROZMIAR_MAPY; j++) {
-            cout << (char)mapa[i][j];
+            if(pozX==j && pozY==i) {
+                cout << (char)GRACZ;
+            }
+            else {
+                cout << (char)mapa[i][j];
+            }
         }
         cout << endl;
     }
@@ -93,15 +96,13 @@ void wypisz(int pozX, pozY) {
 int main() {
     int pozycjaX = 1;
     int pozycjaY = 1;
-    int prevPozycjaX = 1;
-    int prevPozycjaY = 1;
     bool czyGra = true;
     bool czyZmiana = true;
 
     zapisz("mapa.txt");
     wczytaj("mapa.txt");
     system("color f");
-    wypisz();
+    wypisz(pozycjaX, pozycjaY);
 
     while(czyGra) {
         if(GetAsyncKeyState(VK_ESCAPE)) {
