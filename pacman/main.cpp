@@ -2,6 +2,7 @@
 #include <fstream>
 #include <istream>
 #include <windows.h>
+#include <time.h>
 
 using namespace std;
 
@@ -16,34 +17,40 @@ using namespace std;
 #define POINT_1 186
 #define POINT_2 187
 
+#define GORA 1
+#define DOL 2
+#define LEWO 3
+#define PRAWO 4
+
 const int MAX_ROZMIAR_MAPY = 20;
 const int ROZMIAR_MAPY_X = 20;
 const int ROZMIAR_MAPY_Y = 20;
 const int MAPA[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY] = {
-    {MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,WOLNE,WOLNE,MUR,WOLNE,MUR,MUR},
-    {MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR,MUR}
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE},
+    {WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE,WOLNE}
 };
 int mapa[MAX_ROZMIAR_MAPY][MAX_ROZMIAR_MAPY];
+int rozmiarX, rozmiarY;
 
-void zapisz(char* nazwa_pliku) {
+void zapisz(string nazwa_pliku) {
     ofstream plik(nazwa_pliku);
     if(plik.good()) {
         plik << ROZMIAR_MAPY_X << " " << endl;
@@ -61,10 +68,12 @@ void zapisz(char* nazwa_pliku) {
     }
 }
 
-void wczytaj(char* nazwa_pliku) {
+void wczytaj(string nazwa_pliku) {
     string sData, x, y;
     ifstream plik(nazwa_pliku);
     plik >> x >> y;
+    rozmiarX = stoi(x);
+    rozmiarY = stoi(y);
     for(int i=0; i<stoi(y); i++) {
         for(int j=0; j<stoi(x); j++) {
             plik >> sData;
@@ -92,8 +101,36 @@ void wypisz(int pozX, int pozY) {
     }
 }
 
+bool sprawdzMape(int pozX, int pozY, int kierunek) {
+    switch(kierunek) {
+    case GORA:
+        if(mapa[pozY-1][pozX]==WOLNE && pozY>0) {
+            return true;
+        }
+        break;
+    case DOL:
+        if(mapa[pozY+1][pozX]==WOLNE && pozY<rozmiarY-1) {
+            return true;
+        }
+        break;
+    case LEWO:
+        if(mapa[pozY][pozX-1]==WOLNE && pozX>0) {
+            return true;
+        }
+        break;
+    case PRAWO:
+        if(mapa[pozY][pozX+1]==WOLNE && pozX<rozmiarX-1) {
+            return true;
+        }
+        break;
+    }
+    return false;
+}
+
+
 
 int main() {
+    srand(time(NULL));
     int pozycjaX = 1;
     int pozycjaY = 1;
     bool czyGra = true;
@@ -101,7 +138,7 @@ int main() {
 
     zapisz("mapa.txt");
     wczytaj("mapa.txt");
-    system("color f");
+    system("color a");
     wypisz(pozycjaX, pozycjaY);
 
     while(czyGra) {
@@ -109,34 +146,34 @@ int main() {
             czyGra = false;
         }//if(GetAsyncKeyState(VK_ESCAPE))
         if(GetAsyncKeyState(VK_DOWN)) {
-            if(mapa[pozycjaY+1][pozycjaX] != MUR) {
+            if(sprawdzMape(pozycjaX, pozycjaY, DOL)) {
                 pozycjaY++;
                 czyZmiana = true;
             }
         }//if(GetAsyncKeyState(VK_DOWN))
         if(GetAsyncKeyState(VK_UP)) {
-            if(mapa[pozycjaY-1][pozycjaX] != MUR) {
+            if(sprawdzMape(pozycjaX, pozycjaY, GORA)) {
                 pozycjaY--;
                 czyZmiana = true;
             }
         }//if(GetAsyncKeyState(VK_UP))
         else if(GetAsyncKeyState(VK_RIGHT)) {
-            if(mapa[pozycjaY][pozycjaX+1] != MUR) {
+            if(sprawdzMape(pozycjaX, pozycjaY, PRAWO)) {
                 pozycjaX++;
                 czyZmiana = true;
             }
         }//if(GetAsyncKeyState(VK_RIGHT))
         if(GetAsyncKeyState(VK_LEFT)) {
-            if(mapa[pozycjaY][pozycjaX-1] != MUR) {
+            if(sprawdzMape(pozycjaX, pozycjaY, LEWO)) {
                 pozycjaX--;
                 czyZmiana = true;
             }
         }//if(GetAsyncKeyState(VK_LEFT))
-        else if(czyZmiana) {
+        if(czyZmiana) {
             wypisz(pozycjaX, pozycjaY);
             czyZmiana = false;
         }//if(czyZmiana)
-        Sleep(33);
+        Sleep(67);
     }//while(czyGra)
     return 0;
 }
