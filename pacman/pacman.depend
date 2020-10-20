@@ -1,6 +1,8 @@
 # depslib dependency file v1.0
-1601390054 source:c:\users\filip\documents\github\cpp-pacman\pacman\main.cpp
+1603180582 source:c:\users\filip\documents\github\cpp-pacman\pacman\main.cpp
 	<iostream>
 	<fstream>
 	<istream>
+	<windows.h>
+	<time.h>
 
